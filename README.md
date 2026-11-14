@@ -22,3 +22,12 @@ void lsh_loop(void)
   } while (status);
 }
 ```
+
+# Edge cases(?)
+
+We should try to cover at SOME of the corner cases. Being:
+- Prompting ENTER or only SPACES
+- Unknown command
+- Exit
+- cd /tmp, pwd
+- echo "Hello World"
