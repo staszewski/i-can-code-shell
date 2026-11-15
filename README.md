@@ -1,33 +1,17 @@
-# Goal
-Create shell in Rust. For fun. No AI allowed :)
+# Uruchomienie
 
-# Plan
-We need loop. Code taken from [Tutorial - Write a Shell in C by Stephen Brennan](https://brennan.io/2015/01/16/write-a-shell-in-c/)
+Z katalogu głównego projektu:
 
-``` c
-void lsh_loop(void)
-{
-  char *line;
-  char **args;
-  int status;
+```sh
+# Rust
+cargo run --manifest-path in-rust/Cargo.toml
 
-  do {
-    printf("> ");
-    line = lsh_read_line();
-    args = lsh_split_line(line);
-    status = lsh_execute(args);
+# Kompilacja C i C++
+make setup
 
-    free(line);
-    free(args);
-  } while (status);
-}
+# C
+./build/debug/in-c/shell-in-c
+
+# C++
+./build/debug/in-cpp/shell-in-cpp
 ```
-
-# Edge cases(?)
-
-We should try to cover at SOME of the corner cases. Being:
-- Prompting ENTER or only SPACES
-- Unknown command
-- Exit
-- cd /tmp, pwd
-- echo "Hello World"
