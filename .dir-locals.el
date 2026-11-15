@@ -1,0 +1,5 @@
+((nil . ((indent-tabs-mode . nil)
+         (tab-width . 4)
+         (projectile-project-compilation-cmd . "cmake --build build/debug")))
+ (c-mode . ((c-basic-offset . 4)))
+ (c++-mode . ((c-basic-offset . 4))))

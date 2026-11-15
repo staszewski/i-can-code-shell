@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.28)
+project(shell-in-c LANGUAGES C)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# Expose the active build database to clangd in this source directory.
+file(CREATE_LINK "${CMAKE_BINARY_DIR}/compile_commands.json"
+    "${PROJECT_SOURCE_DIR}/compile_commands.json" SYMBOLIC)
+if(NOT DEFINED CMAKE_C_STANDARD)
+    set(CMAKE_C_STANDARD 23)
+endif()
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+include(CTest)
+add_executable(shell-in-c src/main.c)
+if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
+    target_compile_options(shell-in-c PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
+endif()
+if(BUILD_TESTING)
+    add_test(NAME shell-in-c-startup COMMAND shell-in-c)
+    set_tests_properties(shell-in-c-startup PROPERTIES
+        PASS_REGULAR_EXPRESSION "shell project ready" TIMEOUT 30)
+endif()

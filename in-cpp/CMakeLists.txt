@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.28)
+project(shell-in-cpp LANGUAGES CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# Expose the active build database to clangd in this source directory.
+file(CREATE_LINK "${CMAKE_BINARY_DIR}/compile_commands.json"
+    "${PROJECT_SOURCE_DIR}/compile_commands.json" SYMBOLIC)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 23)
+endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+include(CTest)
+add_executable(shell-in-cpp src/main.cpp)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    target_compile_options(shell-in-cpp PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
+endif()
+if(BUILD_TESTING)
+    add_test(NAME shell-in-cpp-startup COMMAND shell-in-cpp)
+    set_tests_properties(shell-in-cpp-startup PROPERTIES
+        PASS_REGULAR_EXPRESSION "shell project ready" TIMEOUT 30)
+endif()
