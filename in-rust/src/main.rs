@@ -11,30 +11,32 @@ fn main() {
             if let Some(command) = split.next() {
                 let args: Vec<&str> = split.collect();
                 if command == "exit" {
-                    println!("Leaving shell, cya");
                     break;
                 }
                 if command == "cd" {
                     if args.is_empty() {
-                        println!("Not enough arguments to run change directory (cd)");
+                        eprintln!("Not enough arguments to run change directory (cd)");
+                        continue;
+                    }
+                    if args.len() > 1 {
+                        eprintln!("cd: too many arguments");
                         continue;
                     }
                     let path = args[0];
                     match set_current_dir(path) {
                         Ok(_) => {}
-                        Err(error) => println!("Error when changing directories, {error}"),
+                        Err(error) => eprintln!("Error when changing directories, {error}"),
                     }
                     continue;
                 }
                 match Command::new(command).args(args).status() {
                     Ok(_) => {}
-                    Err(error) => println!("Error when spawning a command, {error}"),
+                    Err(error) => eprintln!("Error when spawning a command, {error}"),
                 };
             } else {
                 continue;
             }
         } else {
-            println!("Leaving shell, cya");
             break;
         }
     }
