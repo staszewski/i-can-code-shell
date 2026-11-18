@@ -1,9 +1,52 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/_types/_pid_t.h>
 #include <sys/_types/_ssize_t.h>
+#include <unistd.h>
 
 static_assert(__STDC_VERSION__ >= 202311L, "C23 is required");
+
+int shell_execute(char **args) {
+    if (args[0] == NULL) {
+        return 1;
+    }
+
+    if (strcmp(args[0], "exit") == 0) {
+        return 0;
+    }
+
+    if (strcmp(args[0], "cd") == 0) {
+        if (args[1] == NULL) {
+            fprintf(stderr, "cd: no arguments provided \n");
+            return 1;
+        }
+        if (chdir(args[1]) == -1) {
+           perror("error when changing directories");
+        }
+
+        return 1;
+    }
+
+    pid_t pid = fork();
+
+    if (pid == -1) {
+        perror("fork");
+        return 1;
+    }
+
+    if (pid == 0) {
+        execvp(args[0], args);
+        perror(args[0]);
+        _exit(EXIT_FAILURE);
+    } else {
+        if (waitpid(pid, NULL, 0) == -1) {
+            perror("waitpid");
+        }
+    }
+
+    return 1;
+}
 
 char **shell_split_line(char *line) {
     int bufsize = 64;
@@ -55,9 +98,9 @@ char *shell_readline(void) {
 }
 
 void shell_loop(void) {
-    /* int status; */
+    int status;
 
-    while (1) {
+    do {
         printf("> ");
         fflush(stdout);
 
@@ -66,9 +109,13 @@ void shell_loop(void) {
             break;
         }
 
-        shell_split_line(line);
+        char **args = shell_split_line(line);
+        status = shell_execute(args);
+
+
+        free(args);
         free(line);
-    }
+    } while (status);
 }
 
 int main(void) {

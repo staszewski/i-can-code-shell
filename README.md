@@ -62,16 +62,16 @@ Scope: basic shell functionality.
 
 ## C
 
-- [ ] Display a prompt and accept multiple commands.
-- [ ] Ignore empty input, spaces, and tabs.
-- [ ] Run programs from PATH, absolute paths, and relative paths.
-- [ ] Pass multiple whitespace-separated arguments (without quoting).
-- [ ] Wait for the program to finish before showing the next prompt.
-- [ ] Report unknown commands and execution errors; keep running.
-- [ ] Exit cleanly on `exit` and EOF (`Ctrl-D` on an empty line).
-- [ ] Support `cd` with absolute and relative paths.
-- [ ] Report missing and invalid `cd` arguments; keep the current directory unchanged.
-- [ ] Write error messages to stderr.
+- [x] Display a prompt and accept multiple commands.
+- [x] Ignore empty input, spaces, and tabs.
+- [x] Run programs from PATH, absolute paths, and relative paths.
+- [x] Pass multiple whitespace-separated arguments (without quoting).
+- [x] Wait for the program to finish before showing the next prompt.
+- [x] Report unknown commands and execution errors; keep running.
+- [x] Exit cleanly on `exit` and EOF (`Ctrl-D` on an empty line).
+- [x] Support `cd` with absolute and relative paths.
+- [x] Report missing and invalid `cd` arguments; keep the current directory unchanged.
+- [x] Write error messages to stderr.
 
 ## C++
 
