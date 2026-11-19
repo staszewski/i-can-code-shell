@@ -5,8 +5,6 @@
 #include <sys/_types/_ssize_t.h>
 #include <unistd.h>
 
-static_assert(__STDC_VERSION__ >= 202311L, "C23 is required");
-
 int shell_execute(char **args) {
     if (args[0] == NULL) {
         return 1;
